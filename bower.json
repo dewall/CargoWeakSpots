@@ -1,0 +1,19 @@
+{
+  "name": "cargoweakspots",
+  "description": "Visualization of Weakspots of DB Cargo Data",
+  "main": "index.js",
+  "authors": [
+    "Arne de Wall",
+    "Sebastian Drost",
+    "Michael Marz"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/dewall/CargoWeakSpots",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
