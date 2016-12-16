@@ -21,10 +21,10 @@ require([
             stops: [{
                 value: 0,
                 color: "green"
-            },{
+            }, {
                 value: 5000,
                 color: "yellow"
-            },{
+            }, {
                 value: 25000,
                 color: "red"
             }]
@@ -43,7 +43,7 @@ require([
         layers: [fl2]
     });
 
-    var webmap = new WebMap
+    var webmap = new WebMap({
         portalItem: {
             id: "e691172598f04ea8881cd2a4adaa45ba"
         }
