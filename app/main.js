@@ -25,7 +25,7 @@ require([
                 value: 5000,
                 color: "yellow"
             },{
-                value: 50000,
+                value: 25000,
                 color: "red"
             }]
         }]
@@ -43,7 +43,7 @@ require([
         layers: [fl2]
     });
 
-    var webmap = new WebMap({
+    var webmap = new WebMap
         portalItem: {
             id: "e691172598f04ea8881cd2a4adaa45ba"
         }
@@ -73,5 +73,6 @@ require([
         view: sceneView
     });
 
-    view.ui.add(legend, "bottom-right");
+    sceneView.add(legend, "bottom-right");
+
 });
