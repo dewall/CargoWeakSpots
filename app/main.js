@@ -10,7 +10,7 @@ require([
     "dojo/dom",
     "dojo/on",
     "dojo/domReady!"
-], function(Map, MapView, SceneView, Legend, FeatureLayer, WebMap, SimpleRenderer, SimpleLineSymbol, dom, on) {
+], function (Map, MapView, SceneView, Legend, FeatureLayer, WebMap, SimpleRenderer, SimpleLineSymbol, dom, on) {
 
     var variables = {
         "VSumGes": {
@@ -22,8 +22,8 @@ require([
         "FSumGes": {
             name: "Gesamt Fahrzeit",
             low: 0,
-            mid: 50,
-            high: 200,
+            mid: 10,
+            high: 100,
         }
     };
 
@@ -34,19 +34,19 @@ require([
             color: [64, 255, 0]
         }),
         visualVariables: [{
-            type: "color",
-            field: "VSumGes",
-            stops: [{
-                value: 0,
-                color: "green"
-            }, {
-                value: 5000,
-                color: "yellow"
-            }, {
-                value: 25000,
-                color: "red"
+                type: "color",
+                field: "VSumGes",
+                stops: [{
+                        value: 0,
+                        color: "green"
+                    }, {
+                        value: 5000,
+                        color: "yellow"
+                    }, {
+                        value: 25000,
+                        color: "red"
+                    }]
             }]
-        }]
     });
 
     var coloredRenderer2 = new SimpleRenderer({
@@ -55,19 +55,19 @@ require([
             color: [64, 255, 0]
         }),
         visualVariables: [{
-            type: "color",
-            field: "FSumGes",
-            stops: [{
-                value: 0,
-                color: "green"
-            }, {
-                value: 10,
-                color: "yellow"
-            }, {
-                value: 100,
-                color: "red"
+                type: "color",
+                field: "FSumGes",
+                stops: [{
+                        value: 0,
+                        color: "green"
+                    }, {
+                        value: 10,
+                        color: "yellow"
+                    }, {
+                        value: 100,
+                        color: "red"
+                    }]
             }]
-        }]
     });
 
 
@@ -117,21 +117,40 @@ require([
     function initSelector() {
         var select = dom.byId("attSelect");
         for (var key in variables) {
-            let value = variables[key];
-            let option = document.createElement("option");
+            var value = variables[key];
+            var option = document.createElement("option");
             option.text = value.name;
             option.value = key;
             select.add(option);
         }
     }
 
-    on(dom.byId("attSelect"), "change", function(event) {
-        console.log(event.target.value);
-        var selected = variables[event.target.value];
+    on(dom.byId("attSelect"), "change", function (event) {
+        var fieldKey=event.target.value;
+        console.log(fieldKey);
+        var selected = variables[fieldKey];
         if (selected) {
-            featureLayer.renderer = new SimpleRenderer() {
+            featureLayer.renderer = new SimpleRenderer({
+                symbol: new SimpleLineSymbol({
+                    width: 1,
+                    color: [64, 255, 0]
+                }),
+                visualVariables: [{
+                        type: "color",
+                        field: fieldKey,
+                        stops: [{
+                                value: selected.low,
+                                color: "green"
+                            }, {
+                                value: selected.mid,
+                                color: "yellow"
+                            }, {
+                                value: selected.high,
+                                color: "red"
+                            }]
+                    }]
 
-            };
+            });
         }
     });
 
