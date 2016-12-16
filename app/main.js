@@ -7,9 +7,26 @@ require([
     "esri/WebMap",
     "esri/renderers/SimpleRenderer",
     "esri/symbols/SimpleLineSymbol",
-    "app/utils/SliderUtils",
+    "dojo/dom",
+    "dojo/on",
     "dojo/domReady!"
-], function(Map, MapView, SceneView, Legend, FeatureLayer, WebMap, SimpleRenderer, SimpleLineSymbol) {
+], function(Map, MapView, SceneView, Legend, FeatureLayer, WebMap, SimpleRenderer, SimpleLineSymbol, dom, on) {
+
+    var variables = {
+        "VSumGes": {
+            name: "Gesamt",
+            low: 0,
+            mid: 5000,
+            high: 25000
+        },
+        "FSumGes": {
+            name: "Gesamt Fahrzeit",
+            low: 0,
+            mid: 50,
+            high: 200,
+        }
+    };
+
 
     var coloredRenderer = new SimpleRenderer({
         symbol: new SimpleLineSymbol({
@@ -32,16 +49,37 @@ require([
         }]
     });
 
+    var coloredRenderer2 = new SimpleRenderer({
+        symbol: new SimpleLineSymbol({
+            width: 1,
+            color: [64, 255, 0]
+        }),
+        visualVariables: [{
+            type: "color",
+            field: "FSumGes",
+            stops: [{
+                value: 0,
+                color: "green"
+            }, {
+                value: 10,
+                color: "yellow"
+            }, {
+                value: 100,
+                color: "red"
+            }]
+        }]
+    });
 
-    var fl2 = new FeatureLayer({
+
+    var featureLayer = new FeatureLayer({
         url: "http://services.arcgis.com/CHWy5Vg5bILt6ufC/arcgis/rest/services/DBhackathonGrunddaten_WFL/FeatureServer/1",
-        renderer: coloredRenderer,
+        renderer: coloredRenderer2,
         popupEnabled: false
     });
 
     var map = new Map({
         basemap: "dark-gray",
-        layers: [fl2]
+        layers: [featureLayer]
     });
 
     var webmap = new WebMap({
@@ -74,6 +112,29 @@ require([
         view: sceneView
     });
 
-    sceneView.add(legend, "bottom-right");
+    // sceneView.add(legend, "bottom-right");
+
+    function initSelector() {
+        var select = dom.byId("attSelect");
+        for (var key in variables) {
+            let value = variables[key];
+            let option = document.createElement("option");
+            option.text = value.name;
+            option.value = key;
+            select.add(option);
+        }
+    }
+
+    on(dom.byId("attSelect"), "change", function(event) {
+        console.log(event.target.value);
+        var selected = variables[event.target.value];
+        if (selected) {
+            featureLayer.renderer = new SimpleRenderer() {
+
+            };
+        }
+    });
+
+    initSelector();
 
 });

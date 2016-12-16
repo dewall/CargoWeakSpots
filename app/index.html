@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="https://js.arcgis.com/4.1/esri/css/main.css">
     <script src="https://js.arcgis.com/4.1/"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://js.arcgis.com/4.1/esri/themes/dark/main.css">
     <link rel="stylesheet" href="https://js.arcgis.com/4.1/dijit/themes/tundra/tundra.css">
@@ -23,8 +24,7 @@
             <div style="padding-bottom:20px; padding-left:10px;">
                 <h2>Select Time Interval</h2>
                 <select id="attSelect">
-                  <option value="ELEV_ft">Elevation</option>
-                  <option value="PROMINENCE_ft" selected>Prominence</option>
+                  <!-- Filled automatically -->
                 </select>
             </div>
         </div>
@@ -34,5 +34,4 @@
     <!-- endInject -->
     <!-- inject:js -->
     <!-- endinject -->
-    <script src="/app/main.js"></script>
 </body>
