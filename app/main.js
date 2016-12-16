@@ -1,13 +1,55 @@
 require([
     "esri/Map",
-    "esri/views/SceneView"
-], function(Map, SceneView) {
+    "esri/views/MapView",
+    "esri/views/SceneView",
+    "esri/widgets/Legend",
+    "esri/layers/FeatureLayer",
+    "esri/WebMap",
+    "esri/renderers/SimpleRenderer",
+    "esri/symbols/SimpleLineSymbol",
+    "dojo/domReady!"
+], function(Map, MapView, SceneView, Legend, FeatureLayer, WebMap, SimpleRenderer, SimpleLineSymbol) {
 
-    var map = new Map({
-        basemap: "dark-gray"
+    var coloredRenderer = new SimpleRenderer({
+        symbol: new SimpleLineSymbol({
+            width: 1,
+            color: [64, 255, 0]
+        }),
+        visualVariables: [{
+            type: "color",
+            field: "VSumGes",
+            stops: [{
+                value: 0,
+                color: "green"
+            },{
+                value: 5000,
+                color: "yellow"
+            },{
+                value: 50000,
+                color: "red"
+            }]
+        }]
     });
 
-    var view = new SceneView({
+
+    var fl2 = new FeatureLayer({
+        url: "http://services.arcgis.com/CHWy5Vg5bILt6ufC/arcgis/rest/services/DBhackathonGrunddaten_WFL/FeatureServer/1",
+        renderer: coloredRenderer,
+        popupEnabled: false
+    });
+
+    var map = new Map({
+        basemap: "dark-gray",
+        layers: [fl2]
+    });
+
+    var webmap = new WebMap({
+        portalItem: {
+            id: "e691172598f04ea8881cd2a4adaa45ba"
+        }
+    });
+
+    var sceneView = new SceneView({
         container: "viewDiv",
         map: map,
         camera: {
@@ -20,11 +62,15 @@ require([
             heading: 0
         }
     });
+    sceneView.environment.atmosphere.quality = "high";
 
-    view.environment.atmosphere.quality = "high";
+    var mapView = new MapView({
+        container: "viewDiv",
+        map: map
+    });
 
     var legend = new Legend({
-        view: view
+        view: sceneView
     });
 
     view.ui.add(legend, "bottom-right");
