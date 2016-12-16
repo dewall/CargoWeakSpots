@@ -7,6 +7,7 @@ require([
     "esri/WebMap",
     "esri/renderers/SimpleRenderer",
     "esri/symbols/SimpleLineSymbol",
+    "app/utils/SliderUtils",
     "dojo/domReady!"
 ], function(Map, MapView, SceneView, Legend, FeatureLayer, WebMap, SimpleRenderer, SimpleLineSymbol) {
 
