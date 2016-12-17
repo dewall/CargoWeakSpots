@@ -9,18 +9,52 @@ require([
     "esri/dijit/ClassedColorSlider",
     "esri/dijit/ColorInfoSlider",
     "esri/plugins/FeatureLayerStatistics",
+    "esri/InfoTemplate",
+    "esri/dijit/Popup",
+    "esri/dijit/PopupTemplate",
+    "esri/geometry/Extent",
+    "esri/symbols/SimpleFillSymbol",
+    "esri/symbols/SimpleLineSymbol",
+    "esri/tasks/GeometryService",
+    "esri/tasks/query",
+    "dojo/dom-construct",
+    "dojo/dom-class",
     "dijit/registry",
     "dojox/form/RangeSlider",
     "dojo/_base/Color",
     "dojo/dom",
     "dojo/on",
     "dojo/domReady!"
-], function(Map, FeatureLayer, SimpleLineSymbol, SimpleRenderer, ClassBreaksRenderer, HorizontalSlider, smartMapping, ClassedColorSlider, ColorInfoSlider, FeatureLayerStatistics, registry, RangeSlider, Color, dom, on) {
+], function (Map, FeatureLayer, SimpleLineSymbol, SimpleRenderer, ClassBreaksRenderer, HorizontalSlider, smartMapping, ClassedColorSlider, ColorInfoSlider, FeatureLayerStatistics, InfoTemplate, Popup, PopupTemplate, Extent, SimpleFillSymbol, SimpleLineSymbol,
+        GeometryService, Query, domConstruct, domClass, registry, RangeSlider, Color, dom, on) {
 
     var selected = "VSumGes";
     var attributes = {
         "VSumGes": "Gesamte Verspätungen",
-        "FSumGes": "Anzhal aller Fahrten"
+        "FSumGes": "Anzahl aller Fahrten",
+        "VFFahrSum": "Verhältnis Verspätungen/Fahrten",
+        "VSumJan": "Gesamte Verspätungen (Januar)",
+        "FSumJan": "Anzahl aller Fahrten (Januar)",
+        "VSumFeb": "Gesamte Verspätungen (Februar)",
+        "FSumFeb": "Anzahl aller Fahrten (Februar)",
+        "VSumMrz": "Gesamte Verspätungen (März)",
+        "FSumMrz": "Anzahl aller Fahrten (März)",
+        "VSumApr": "Gesamte Verspätungen (April)",
+        "FSumApr": "Anzahl aller Fahrten (April)",
+        "VSumMai": "Gesamte Verspätungen (Mai)",
+        "FSumMai": "Anzahl aller Fahrten (Mai)",
+        "VSumJun": "Gesamte Verspätungen (Juni)",
+        "FSumJun": "Anzahl aller Fahrten (Juni)",
+        "VSumJul": "Gesamte Verspätungen (Juli)",
+        "FSumJul": "Anzahl aller Fahrten (Juli)",
+        "VSumAug": "Gesamte Verspätungen (August)",
+        "FSumAug": "Anzahl aller Fahrten (August)",
+        "VSumSep": "Gesamte Verspätungen (September)",
+        "FSumSep": "Anzahl aller Fahrten (September)",
+        "VSumOkt": "Gesamte Verspätungen (Oktober)",
+        "FSumOkt": "Anzahl aller Fahrten (Oktober)",
+        "VSumNov": "Gesamte Verspätungen (November)",
+        "FSumNov": "Anzahl aller Fahrten (November)"
     }
 
     var map = new Map("viewDiv", {
@@ -40,12 +74,12 @@ require([
     var colorInfoSlider = new ColorInfoSlider({
         colorInfo: {
             stops: [{
-                color: new Color("#FFFCD4"),
-                value: 0.0001
-            }, {
-                color: new Color("#FFFCD4"),
-                value: 1.0001
-            }]
+                    color: new Color("#FFFCD4"),
+                    value: 0.0001
+                }, {
+                    color: new Color("#FFFCD4"),
+                    value: 1.0001
+                }]
         }
     }, "esri-colorinfoslider");
     colorInfoSlider.startup();
@@ -64,12 +98,29 @@ require([
         visible: true
     });
 
+    var popup = new Popup({
+        fillSymbol: new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+                new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
+                        new Color([255, 0, 0]), 2), new Color([255, 255, 0, 0.25]))
+    }, domConstruct.create("div"));
+
+    domClass.add(popup.domNode, "myTheme");
+
+    var infoTemplate = new InfoTemplate("Attributes", "VSumGes: ${VSumGes}<br>FSumGes: ${FSumGes}");
+
+
+    var featureLayer = new FeatureLayer("http://services.arcgis.com/CHWy5Vg5bILt6ufC/arcgis/rest/services/DBhackathonGrunddaten_WFL/FeatureServer/1", {
+        mode: FeatureLayer.MODE_AUTO,
+        outFields: "*",
+        infoTemplate: infoTemplate
+    });
+
 
     // featureLayer.setRenderer(renderer);
 
     map.addLayer(featureLayer);
 
-    featureLayer.on("load", function() {
+    featureLayer.on("load", function () {
         map.addLayer(featureLayer);
 
         // featureLayer.setInfoTemplate(new InfoTemplate("${NAME} County, ${STATE_FIPS:FormatFIPSToStateAbbr()}", content));
@@ -89,12 +140,12 @@ require([
     function initSelector() {
         var select = dom.byId("attrib-selector");
         for (var key in attributes) {
-            let value = attributes[key];
-            let option = document.createElement("option");
-            option.text = value;
-            option.value = key;
-            select.add(option);
-        }
+        let value = attributes[key];
+                let option = document.createElement("option");
+                option.text = value;
+        option.value = key;
+        select.add(option);
+    }
     }
     initSelector();
 
@@ -105,7 +156,7 @@ require([
             field: "VSumGes",
             basemap: "dark-gray",
             theme: "high-to-low"
-        }).then(function(colorRenderer) {
+        }).then(function (colorRenderer) {
             hackColorRamp(colorRenderer);
 
             featureLayer.setRenderer(colorRenderer.renderer);
@@ -114,7 +165,7 @@ require([
             featureLayerStatistics.getHistogram({
                 field: selected,
                 numBins: 20
-            }).then(function(histogram) {
+            }).then(function (histogram) {
                 colorInfoSlider.set("colorInfo", colorRenderer.renderer.visualVariables[0]);
                 colorInfoSlider.set("minValue", colorRenderer.statistics.min);
                 colorInfoSlider.set("maxValue", colorRenderer.statistics.max);
@@ -123,20 +174,22 @@ require([
                 colorInfoSlider.set("handles", [0, 4]);
                 colorInfoSlider.set("primaryHandle", null);
 
-                colorInfoSlider.on("handle-value-change", function(sliderValueChange) {
+                colorInfoSlider.on("handle-value-change", function (sliderValueChange) {
                     //console.log("handle-value-change", sliderValueChange);
                     featureLayer.renderer.setVisualVariables([sliderValueChange]);
+                    setInfoTemplate(sliderValueChange);
+                    console.log("attributeValue");
                     featureLayer.redraw();
                 });
 
-                dom.byId("attrib-selector").onchange = function() {
+                dom.byId("attrib-selector").onchange = function () {
                     selected = this.value;
                     smartMapping.createColorRenderer({
                         layer: featureLayer,
                         field: selected,
                         basemap: "dark-gray",
                         theme: "high-to-low"
-                    }).then(function(colorRenderer) {
+                    }).then(function (colorRenderer) {
                         hackColorRamp(colorRenderer);
 
                         //console.log("create color renderer is generated", colorRenderer);
@@ -149,15 +202,22 @@ require([
                         colorInfoSlider.set("handles", [0, 4]);
                         colorInfoSlider.set("primaryHandle", null);
 
-                    }).otherwise(function(error) {
+                    }).otherwise(function (error) {
                         console.log("Error: %o", error);
                         colorInfoSlider.showHistogram = false;
                     });
                 };
             });
         })
-    };
+    }
+    ;
 
+    function setInfoTemplate(attributeValue){
+        console.log("attributeValue");
+        var infoTemplate = new InfoTemplate("Attributes", attributeValue+": ${"+attributeValue+"}");
+        featureLayer.infoTemplate=infoTemplate;
+    }1
+    
     function hackColorRamp(colorRenderer) {
         var tmp = colorRenderer.renderer.visualVariables[0];
 
