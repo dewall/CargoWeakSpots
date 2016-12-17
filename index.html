@@ -2,7 +2,8 @@
 <html lang="en" ng-app="eventingClient">
 
 <head>
-    <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
     <title>eventing</title>
 
     <!-- bower:css -->
@@ -12,23 +13,20 @@
     <link rel="stylesheet" href="/app/styles/rangeSlider-flat.css">
     <!-- endInject -->
 
-      <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
     <script src="https://js.arcgis.com/3.18/"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/3.18/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
 </head>
 
-<body class="tundra">
+<body class="claro">
     <div id="viewDiv">
-        <div id="sidebar">
-            <div style="padding-bottom:20px; padding-left:10px;">
-                <h2>Select Time Interval</h2>
-                <select id="attSelect">
-                  <!-- Filled automatically -->
-
-                </select>
-            </div>
-        </div>
     </div>
-
+    <div id="esri-colorinfoslider-container">
+        <div id="title"></div>
+        <hr>
+        <div id="esri-colorinfoslider"></div>
+    </div>
     <!-- bower:js -->
     <!-- endInject -->
     <!-- inject:js -->
