@@ -1,27 +1,38 @@
 {
-  "name": "cargoweakspots",
-  "version": "1.0.0",
-  "description": "Visualization of Weakspots of DB Cargo Data",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dewall/CargoWeakSpots.git"
-  },
-  "author": "Arne de Wall, Sebastian Drost, Michael Marz",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/dewall/CargoWeakSpots/issues"
-  },
-  "homepage": "https://github.com/dewall/CargoWeakSpots#readme",
-  "dependencies": {
-    "gulp": "^3.9.1",
-    "gulp-connect": "^5.0.0",
-    "gulp-inject": "^4.1.0",
-    "gulp-ruby-sass": "^2.1.1",
-    "gulp-sass": "^3.0.0",
-    "main-bower-files": "^2.13.1"
-  }
+    "name": "cargoweakspots",
+    "version": "1.0.0",
+    "description": "Visualization of Weakspots of DB Cargo Data",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js",
+        "postinstall": "bower install && gulp build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dewall/CargoWeakSpots.git"
+    },
+    "author": "Arne de Wall, Sebastian Drost, Michael Marz",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/dewall/CargoWeakSpots/issues"
+    },
+    "homepage": "https://github.com/dewall/CargoWeakSpots#readme",
+    "dependencies": {
+        "express": "^4.14.0",
+        "gulp": "^3.9.1",
+        "gulp-connect": "^5.0.0",
+        "gulp-inject": "^4.1.0",
+        "gulp-ruby-sass": "^2.1.1",
+        "gulp-sass": "^3.0.0",
+        "main-bower-files": "^2.13.1",
+        "body-parser": "^1.15.2",
+        "morgan": "^1.7.0",
+        "path": "^0.12.7",
+        "stream-series": "^0.1.1",
+        "vinyl-source-stream": "^1.1.0"
+    },
+    "engines": {
+        "node": "5.10.1",
+        "bower": "1.7.9"
+    }
 }

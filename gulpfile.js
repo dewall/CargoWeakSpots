@@ -45,3 +45,4 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', ['styles', 'index', 'connect', 'watch']);
+gulp.task('build', ['styles', 'index']);
