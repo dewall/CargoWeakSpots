@@ -24,17 +24,17 @@ gulp.task('index', function() {
     var sources = gulp.src(['./app/**/*.js', '!./app/app.js', './app/**/*.css'], {
         read: false
     });
-    var bowerSources = gulp.src(bowerFiles(), {
-        read: false
-    });
+    // var bowerSources = gulp.src(bowerFiles(), {
+    //     read: false
+    // });
 
     return target
         .pipe(inject(sources))
-        .pipe(inject(bowerSources, {
-            name: 'bower'
-        }, {
-            relative: true
-        }))
+        // .pipe(inject(bowerSources, {
+        //     name: 'bower'
+        // }, {
+        //     relative: true
+        // }))
         .pipe(gulp.dest(''));
 });
 
