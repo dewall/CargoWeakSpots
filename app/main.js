@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 require([
     "esri/map",
     "esri/layers/FeatureLayer",
@@ -205,7 +206,7 @@ require([
             });
         })
     }
-  
+
 
     function setInfoTemplate(attributeValue) {
         console.log("attributeValue");
