@@ -16,6 +16,13 @@ require([
     "dojo/on",
     "dojo/domReady!"
 ], function(Map, FeatureLayer, SimpleLineSymbol, SimpleRenderer, ClassBreaksRenderer, HorizontalSlider, smartMapping, ClassedColorSlider, ColorInfoSlider, FeatureLayerStatistics, registry, RangeSlider, Color, dom, on) {
+
+    var selected = "VSumGes";
+    var attributes = {
+        "VSumGes": "Gesamte Verspätungen",
+        "FSumGes": "Anzhal aller Fahrten"
+    }
+
     var map = new Map("viewDiv", {
         basemap: "dark-gray",
         center: [10.198198, 51.310202],
@@ -43,10 +50,10 @@ require([
     }, "esri-colorinfoslider");
     colorInfoSlider.startup();
 
-    var renderer = new ClassBreaksRenderer(symbol, "VSumGes");
-    renderer.addBreak(0, 2000, new SimpleLineSymbol().setColor(new Color([0, 255, 0, 0.5])));
-    renderer.addBreak(5000, 10000, new SimpleLineSymbol().setColor(new Color([255, 255, 0, 0.5])));
-    renderer.addBreak(10000, 20000, new SimpleLineSymbol().setColor(new Color([255, 0, 0, 0.5])));
+    // var renderer = new ClassBreaksRenderer(symbol, "VSumGes");
+    // renderer.addBreak(0, 2000, new SimpleLineSymbol().setColor(new Color([0, 255, 0, 0.5])));
+    // renderer.addBreak(5000, 10000, new SimpleLineSymbol().setColor(new Color([255, 255, 0, 0.5])));
+    // renderer.addBreak(10000, 20000, new SimpleLineSymbol().setColor(new Color([255, 0, 0, 0.5])));
 
     var featureLayer = new FeatureLayer("http://services.arcgis.com/CHWy5Vg5bILt6ufC/arcgis/rest/services/DBhackathonGrunddaten_WFL/FeatureServer/1", {
         mode: FeatureLayer.MODE_AUTO,
@@ -58,7 +65,7 @@ require([
     });
 
 
-    featureLayer.setRenderer(renderer);
+    // featureLayer.setRenderer(renderer);
 
     map.addLayer(featureLayer);
 
@@ -79,7 +86,17 @@ require([
     //     renderer.addBreak(10000, 20000, new SimpleLineSymbol().setColor(new Color([255, 0, 0, 0.5])));
     //     featureLayer.redraw();
     // }, 2500);
-
+    function initSelector() {
+        var select = dom.byId("attrib-selector");
+        for (var key in attributes) {
+            let value = attributes[key];
+            let option = document.createElement("option");
+            option.text = value;
+            option.value = key;
+            select.add(option);
+        }
+    }
+    initSelector();
 
     function updateSmartMapping() {
 
@@ -94,7 +111,7 @@ require([
             featureLayer.redraw();
 
             featureLayerStatistics.getHistogram({
-                field: "VSumGes",
+                field: selected,
                 numBins: 20
             }).then(function(histogram) {
                 colorInfoSlider.set("colorInfo", colorRenderer.renderer.visualVariables[0]);
@@ -110,6 +127,31 @@ require([
                     featureLayer.renderer.setVisualVariables([sliderValueChange]);
                     featureLayer.redraw();
                 });
+
+                dom.byId("attrib-selector").onchange = function() {
+                    selected = this.value;
+                    smartMapping.createColorRenderer({
+                        layer: featureLayer,
+                        field: selected,
+                        basemap: "dark-gray",
+                        theme: "high-to-low"
+                    }).then(function(colorRenderer) {
+
+                        //console.log("create color renderer is generated", colorRenderer);
+                        featureLayer.setRenderer(colorRenderer.renderer);
+                        featureLayer.redraw();
+
+                        colorInfoSlider.set("minValue", colorRenderer.statistics.min);
+                        colorInfoSlider.set("maxValue", colorRenderer.statistics.max);
+                        colorInfoSlider.set("colorInfo", colorRenderer.renderer.visualVariables[0]);
+                        colorInfoSlider.set("handles", [0, 4]);
+                        colorInfoSlider.set("primaryHandle", null);
+
+                    }).otherwise(function(error) {
+                        console.log("Error: %o", error);
+                        colorInfoSlider.showHistogram = false;
+                    });
+                };
             });
         })
     };
