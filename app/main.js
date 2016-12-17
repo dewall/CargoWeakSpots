@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 require([
     "esri/map",
     "esri/layers/FeatureLayer",
