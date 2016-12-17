@@ -234,9 +234,9 @@ require([
     function hackColorRamp(colorRenderer) {
         var tmp = colorRenderer.renderer.visualVariables[0];
 
-        // dirty hack
-        colorRenderer.renderer.defaultSymbol.width = 3;
-        colorRenderer.renderer._symbols["-9007199254740991-9007199254740991"].width = 3;
+        // // dirty hack
+        // colorRenderer.renderer.defaultSymbol.width = 3;
+        // colorRenderer.renderer._symbols["-9007199254740991-9007199254740991"].width = 2;
 
         tmp.stops[4].color = {
             a: 1,
