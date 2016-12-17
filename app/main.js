@@ -68,7 +68,7 @@ require([
         // featureLayer.setInfoTemplate(new InfoTemplate("${NAME} County, ${STATE_FIPS:FormatFIPSToStateAbbr()}", content));
 
         //ColorInfoSlider panel title
-        dom.byId("title").innerHTML = "hallo";
+        dom.byId("title").innerHTML = "Settings";
 
         updateSmartMapping();
     });

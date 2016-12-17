@@ -45,13 +45,16 @@ html, body {
 #esri-colorinfoslider-container {
   position: absolute;
   z-index: 2;
-  bottom: 0;
-  left: 0;
-  background-color: #FFFCD4;
+  top: 20px;
+  right: 20px;
+  background-color: #FFF;
   color: #6B3B64;
-  height: 100%;
-  width: 300px;
+  height: 400px;
+  width: 250px;
+  border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   overflow-x: hidden; }
 
 #basemapToggle-container {
@@ -96,4 +99,4 @@ h2 {
   text-align: center; }
 
 #esri_dijit_RendererSlider_0 {
-  background-color: #FFFCD4; }
+  background-color: #FFFFFF; }
