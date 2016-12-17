@@ -17,6 +17,5 @@
     "tests"
   ],
   "dependencies": {
-    "arcgis-js-api": "^4.1.0"
   }
 }
