@@ -106,7 +106,8 @@ require([
             basemap: "dark-gray",
             theme: "high-to-low"
         }).then(function(colorRenderer) {
-            console.log(colorRenderer.renderer);
+            hackColorRamp(colorRenderer);
+
             featureLayer.setRenderer(colorRenderer.renderer);
             featureLayer.redraw();
 
@@ -136,6 +137,7 @@ require([
                         basemap: "dark-gray",
                         theme: "high-to-low"
                     }).then(function(colorRenderer) {
+                        hackColorRamp(colorRenderer);
 
                         //console.log("create color renderer is generated", colorRenderer);
                         featureLayer.setRenderer(colorRenderer.renderer);
@@ -155,6 +157,45 @@ require([
             });
         })
     };
+
+    function hackColorRamp(colorRenderer) {
+        var tmp = colorRenderer.renderer.visualVariables[0];
+
+        tmp.stops[4].color = {
+            a: 1,
+            b: 0,
+            g: 0,
+            r: 255
+        }
+
+        tmp.stops[3].color = {
+            a: 1,
+            b: 0,
+            g: 125,
+            r: 255
+        }
+
+        tmp.stops[2].color = {
+            a: 1,
+            b: 0,
+            g: 255,
+            r: 255
+        }
+
+        tmp.stops[1].color = {
+            a: 1,
+            b: 0,
+            g: 255,
+            r: 125
+        }
+
+        tmp.stops[0].color = {
+            a: 1,
+            b: 0,
+            g: 255,
+            r: 0
+        }
+    }
     // var variables = {
     //     "VSumGes": {
     //         name: "Gesamt",
