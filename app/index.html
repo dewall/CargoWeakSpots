@@ -1,32 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="eventingClient">
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
-    <title>eventing</title>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+        <title>eventing</title>
 
-    <!-- bower:css -->
-    <!-- endInject -->
-    <!-- inject:css -->
-    <!-- endInject -->
+        <!-- bower:css -->
+        <!-- endInject -->
+        <!-- inject:css -->
+        <!-- endInject -->
 
-    <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
-    <script src="https://js.arcgis.com/3.18/"></script>
-    <link rel="stylesheet" href="https://js.arcgis.com/3.18/dijit/themes/claro/claro.css">
-    <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
-</head>
+        <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
+        <script src="https://js.arcgis.com/3.18/"></script>
+        <link rel="stylesheet" href="https://js.arcgis.com/3.18/dijit/themes/claro/claro.css">
+        <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
 
-<body class="claro">
-    <div id="viewDiv">
+    </head>
 
-        <div id="esri-colorinfoslider-container">
-            <div id="title" style="padding-left:8px; padding-top:8px">Settings</div>
-            <hr/>
-            <div style="padding-left:8px; padding-top:8px" /> Daten:
-            <select id="attrib-selector"> </select> </div>
-        <div id="esri-colorinfoslider" /></div>
+    <body class="claro">
+        <div id="viewDiv">
+
+            <div id="esri-colorinfoslider-container">
+                <div id="title" style="padding-left:8px; padding-top:8px">Settings</div>
+                <hr/>
+                <div style="padding-left:8px; padding-top:8px" /> Daten:
+                <select id="attrib-selector"> </select> </div>
+            <div id="esri-colorinfoslider" /></div>
     </div>
+
+    <div id="layerListDom" style="padding-left:8px; padding-top:8px"></div>
+
+
     <!-- bower:js -->
     <!-- endInject -->
     <!-- inject:js -->
