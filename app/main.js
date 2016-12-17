@@ -17,6 +17,7 @@ require([
     "esri/symbols/SimpleLineSymbol",
     "esri/tasks/GeometryService",
     "esri/tasks/query",
+    "esri/dijit/LayerList",
     "dojo/dom-construct",
     "dojo/dom-class",
     "dijit/registry",
@@ -26,7 +27,7 @@ require([
     "dojo/on",
     "dojo/domReady!"
 ], function (Map, FeatureLayer, SimpleLineSymbol, SimpleRenderer, ClassBreaksRenderer, HorizontalSlider, smartMapping, ClassedColorSlider, ColorInfoSlider, FeatureLayerStatistics, InfoTemplate, Popup, PopupTemplate, Extent, SimpleFillSymbol, SimpleLineSymbol,
-        GeometryService, Query, domConstruct, domClass, registry, RangeSlider, Color, dom, on) {
+        GeometryService, Query,LayerList, domConstruct, domClass, registry, RangeSlider, Color, dom, on) {
 
     var selected = "VSumGes";
     var attributes = {
@@ -84,12 +85,15 @@ require([
     }, "esri-colorinfoslider");
     colorInfoSlider.startup();
 
+
+
+
     // var renderer = new ClassBreaksRenderer(symbol, "VSumGes");
     // renderer.addBreak(0, 2000, new SimpleLineSymbol().setColor(new Color([0, 255, 0, 0.5])));
     // renderer.addBreak(5000, 10000, new SimpleLineSymbol().setColor(new Color([255, 255, 0, 0.5])));
     // renderer.addBreak(10000, 20000, new SimpleLineSymbol().setColor(new Color([255, 0, 0, 0.5])));
 
-    var featureLayer = new FeatureLayer("http://services.arcgis.com/CHWy5Vg5bILt6ufC/arcgis/rest/services/DBhackathonGrunddaten_WFL/FeatureServer/1", {
+    var featureLayer = new FeatureLayer("http://services.arcgis.com/CHWy5Vg5bILt6ufC/arcgis/rest/services/DBhackathon_Grunddaten_V2_extra_Download/FeatureServer/2", {
         mode: FeatureLayer.MODE_AUTO,
         outFields: "*"
     });
@@ -106,15 +110,7 @@ require([
 
     domClass.add(popup.domNode, "myTheme");
 
-    var infoTemplate = new InfoTemplate("Attributes", "VSumGes: ${VSumGes}<br>FSumGes: ${FSumGes}");
-
-
-    var featureLayer = new FeatureLayer("http://services.arcgis.com/CHWy5Vg5bILt6ufC/arcgis/rest/services/DBhackathonGrunddaten_WFL/FeatureServer/1", {
-        mode: FeatureLayer.MODE_AUTO,
-        outFields: "*",
-        infoTemplate: infoTemplate
-    });
-
+    var infoTemplate = setInfoTemplate(selected);
 
     // featureLayer.setRenderer(renderer);
 
@@ -130,6 +126,15 @@ require([
 
         updateSmartMapping();
     });
+
+//    var layerList = new LayerList({
+//        map: map,
+//        showLegend: true,
+//        showSubLayers: false,
+//        showOpacitySlider: true,
+//        layers: [featureLayer]
+//    }, "layerListDom");
+//    layerList.startup();
 
     function initSelector() {
         var select = dom.byId("attrib-selector");
@@ -171,7 +176,7 @@ require([
                 colorInfoSlider.on("handle-value-change", function (sliderValueChange) {
                     //console.log("handle-value-change", sliderValueChange);
                     featureLayer.renderer.setVisualVariables([sliderValueChange]);
-                    setInfoTemplate(sliderValueChange);
+
                     console.log("attributeValue");
                     featureLayer.redraw();
                 });
@@ -186,6 +191,7 @@ require([
                     }).then(function (colorRenderer) {
                         hackColorRamp(colorRenderer);
 
+                        setInfoTemplate(selected);
                         //console.log("create color renderer is generated", colorRenderer);
                         featureLayer.setRenderer(colorRenderer.renderer);
                         featureLayer.redraw();
@@ -208,8 +214,7 @@ require([
 
 
     function setInfoTemplate(attributeValue) {
-        console.log("attributeValue");
-        var infoTemplate = new InfoTemplate("Attributes", attributeValue + ": ${" + attributeValue + "}");
+        var infoTemplate = new InfoTemplate("DB Cargo Verspätungen", attributes[attributeValue] + ": ${" + attributeValue + "}" + " Stunden");
         featureLayer.infoTemplate = infoTemplate;
     }
 
