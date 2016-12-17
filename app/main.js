@@ -214,7 +214,16 @@ require([
 
 
     function setInfoTemplate(attributeValue) {
-        var infoTemplate = new InfoTemplate("DB Cargo Verspätungen", attributes[attributeValue] + ": ${" + attributeValue + "}" + " Stunden");
+        var infoTemplate;
+        if (attributeValue.startsWith("V")){
+             infoTemplate = new InfoTemplate("DB Cargo Verspätungen", attributes[attributeValue] + ": ${" + attributeValue + "}" + " Stunden");
+        }
+        else if(attributeValue.startsWith("F")){
+             infoTemplate = new InfoTemplate("DB Cargo Fahrten", attributes[attributeValue] + ": ${" + attributeValue + "}");
+        }
+        else{
+            infoTemplate = new InfoTemplate("Attribute", attributes[attributeValue] + ": ${" + attributeValue + "}");
+        }
         featureLayer.infoTemplate = infoTemplate;
     }
 
