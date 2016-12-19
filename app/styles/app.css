@@ -5,30 +5,6 @@
   width: 100%;
   position: absolute; }
 
-#sidebar {
-  z-index: 99;
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 280px;
-  background: rgba(61, 59, 60, 0.75);
-  font-family: "Avenir Next W00", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  overflow-y: auto; }
-
-#legendDiv {
-  padding-top: 20px;
-  padding-left: 20px;
-  color: white;
-  background-color: transparent;
-  box-shadow: none; }
-
-#legendDiv_msg {
-  display: none; }
-
-.tundra .dijitPopup {
-  background-color: white; }
-
 html, body {
   margin: 0;
   padding: 0;
